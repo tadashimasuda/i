@@ -1,0 +1,43 @@
+/*　共通 */
+header{
+  height: 50px;
+  width: 100%;
+  max-width: 100%;
+  background-color: skyblue;
+}
+header h1{
+  text-align: center;
+}
+h2{
+  text-align: center;
+  margin-top: 30px;
+}
+
+div.wrapper{
+  width: 960px;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-top: 200px;
+  height: auto;
+}
+main{
+  margin: 0 auto;
+  height: auto;
+}
+.btn{
+  text-align: center;
+}
+/* products.ejs */
+ul{
+  display: flex;
+  flex-wrap: wrap;  
+  height: auto;
+}
+li{
+  height: 380px;
+  min-width: 200px;
+  width: 33%;
+  border: black;
+  border: 1px solid black;
+  list-style:none;
+}

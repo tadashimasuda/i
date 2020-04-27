@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <title>カートを見る</title>
+</head>
+
+<body>
+    <main>
+        <header>
+            <h1>amazoon</h1>
+            <h2><a href="/cart/index">カートを見る</a></h2>
+            <h2><a href="/products">商品一覧を見る</a></h2>
+        </header>
+        <div class="wrapper">
+            <h2>カートの中身</h2>
+
+            <p><%= purchases.product %></p>
+            <ul>
+
+                <% purchases.map((parchases) =>{ %>
+                <li>
+                    <img src="<%= parchases.product.image %> " alt="">
+                    <p><%= parchases.product.name %> </p>
+                    <p><%= parchases.product.price %> </p>
+                    <p>個数：<%= parchases.amount %> </p>
+
+                    <form action="/cart/delete/<%= parchases.id %>" method="POST">
+                        <input type="hidden" name="_method" value="delete">
+                        <input type="submit" value="削除する">
+                    </form>
+                </li>
+
+                <% }) %>
+            </ul>
+
+            <form action="/cart/confirm" method="POST">
+                <!-- user_idをhiddenで送る　一時的に固定で１ -->
+                <input type="hidden" name="id" value="1">
+                <input type="submit" value="レジに進む" class="btn">
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

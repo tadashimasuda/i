@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <title>商品一覧</title>
+</head>
+
+<body>
+    <header>
+        <h1>amazoon</h1>
+        <h2><a href="/cart/index">カートを見る</a></h2>
+        <h2><a href="/products">商品一覧を見る</a></h2>
+    </header>
+    <div class="wrapper">
+        <main>
+            <ul>
+            <li>
+                <img src="<%= product.image %>" alt="">
+                <p><%= product.name %></p>
+                <p><%= product.price %>円</p>
+                <form action="/cart/add/<%= product.id %>" method="post">
+                    <div class="def-number-input number-input safari_only">
+                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                            class="minus">-</button>
+                        <input class="amount" min="0" name="amount" value="1" type="number">
+                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                            class="plus">+</button>
+                    </div>
+                    <input type="submit" value="カートへ追加する">
+                </form>
+            </li>
+        </ul>
+        </main>
+</div>
+
+</body>
+
+</html>
