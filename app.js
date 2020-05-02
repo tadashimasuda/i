@@ -72,12 +72,17 @@ app.post('/login',
     badRequestMessage: '「メールアドレス」と「パスワード」は必須入力です。'
   })
 );
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/products');
+});
 
 // ログイン成功後のページ
 app.get('/user', authMiddleware, (req, res) => {
   const user = req.user;
+  // console.log(user);
   // res.send('ログイン完了！');
-  res.redirect('products');
+  res.redirect('cart/index');
 });
 
 var indexRouter = require('./routes/index');

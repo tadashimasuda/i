@@ -17,18 +17,21 @@
         </header>
         <div class="wrapper">
             <h2>カートの中身</h2>
-
+            <% if(user){ %>
+                <p><%= user.username %>さんのカート</p>
+                <p><%= purchases %></p>
+            <% } %>
+        
             <p><%= purchases.product %></p>
             <ul>
-
-                <% purchases.map((parchases) =>{ %>
+                <% purchases.map((purchase) =>{ %>
                 <li>
-                    <img src="<%= parchases.product.image %> " alt="">
-                    <p><%= parchases.product.name %> </p>
-                    <p><%= parchases.product.price %> </p>
-                    <p>個数：<%= parchases.amount %> </p>
+                    <img src="<%= purchase.product.image %> " alt="">
+                    <p><%= purchase.product.name %> </p>
+                    <p><%= purchase.product.price %> </p>
+                    <p>個数：<%= purchase.amount %> </p>
 
-                    <form action="/cart/delete/<%= parchases.id %>" method="POST">
+                    <form action="/cart/delete/<%= purchase.id %>" method="POST">
                         <input type="hidden" name="_method" value="delete">
                         <input type="submit" value="削除する">
                     </form>

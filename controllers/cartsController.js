@@ -2,18 +2,22 @@ const db = require('../models/index');
 const products = require('../models/index').products;
 const purchases = require('../models/index').purchases;
 exports.index = (req, res) => {
-    var userId = 1;
+    // var userId = req.user.id;
+    if(!req.user){
+       res.redirect('/login');
+    }
+    var userId = req.user.id;
+    console.log(userId)
     const filter = {
-        where:{
-            user_id:userId
+        where: {
+            user_id: userId
         },
         include: [{
             model: db.products,
         }]
     }
     purchases.findAll(filter).then((results) => {
-        console.log(results);
-        res.render('cart/index', { purchases: results });
+        res.render('cart/index', {purchases: results,user: req.user });
     });
 }
 exports.add = (req, res) => {
@@ -25,12 +29,12 @@ exports.add = (req, res) => {
     products.findOne({ where: { id: req.params.id } }).then((product) => {
         const params = {
             product_id: product.id,
-            user_id: 1,//固定
+            user_id: req.user.id,//固定
             price: product.price,
             amount: 1,
         };
         //全てのデータを調査
-        var userId = 1;//固定
+        var userId = req.user.id;//固定
         var amount_flg = 0;
         purchases.findAll().then((rows) => {
             console.log(rows.length)
@@ -38,7 +42,6 @@ exports.add = (req, res) => {
             //     purchases.findOne({ where: { user_id: userId, id: i } }).then((result) => {
             //         if (result.product_id == product.id) {
             //             result.update({
-
             //                 amount: row.amount + 1
             //             })
             //             amount_flg = 1;
@@ -58,11 +61,7 @@ exports.add = (req, res) => {
             }
             if (amount_flg == 0) {
                 purchases.create(params).then((result) => {
-                    // if (result && product) {
-                    //   product.update({
-                    //     stock: product.stock - amount
-                    //   })
-                    // }
+
                     console.log('add')
                     res.redirect('/products/' + req.params.id);
                 });
@@ -73,17 +72,16 @@ exports.add = (req, res) => {
 exports.confirm = (req, res) => {
     console.log('confirm')
     //ユーザーの一致するカート取得（all）
-    var userId = 1;
+    var userId = req.user.id;
     const filter = {
-        where:{
-            user_id:userId
+        where: {
+            user_id: userId
         },
         include: [{
             model: db.products,
         }]
     }
     purchases.findAll(filter).then((results) => {
-        console.log(results)
         res.render('cart/confirm', { purchases: results });
     });
 }
@@ -91,14 +89,20 @@ exports.confirm = (req, res) => {
 exports.finish = (req, res) => {
     //db 対象のレコード削除
     //stockでものがあるのか　ー＞　stock数合わせ
-    var userId = req.body.userId
-    db.purchases.destroy({ where: { user_id: userId } }).then((results) => {
+    // if (result && product) {
+    //   product.update({
+    //     stock: product.stock - amount
+    //   })
+    // }
+    var userId = req.user.id
+    db.purchases.destroy({ where: { user_id: userId } }).then(() => {
         res.render('cart/finish');
     });
 }
 
 exports.delete = (req, res) => {
-    db.purchases.destroy({ where: { id: req.params.id } }).then((results) => {
+    console.log('aaaa');
+    db.purchases.destroy({ where: { id: req.param.id } }).then((results) => {
         res.redirect('/cart/index');
     });
 }
